@@ -5,12 +5,12 @@
 %define pkgname compass
 Summary:	A Sass-based CSS Meta-Framework
 Name:		ruby-%{pkgname}
-Version:	0.12.5
+Version:	1.0.1
 Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gemcutter.org/downloads/compass-%{version}.gem
-# Source0-md5:	8cd8ccbeebbba9ca592396e38498fb3e
+# Source0-md5:	5a19400d88b93f091d12ce178b43e8ca
 URL:		http://compass-style.org/
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.656
@@ -24,10 +24,16 @@ BuildRequires:	rubygem(minitest)
 BuildRequires:	rubygem(mocha)
 BuildRequires:	rubygem(sass)
 %endif
-Requires:	ruby-sass
-Requires:	rubygem(chunky_png)
-Requires:	rubygem(fssm) >= 0.2.7
-Requires:	rubygem(haml) >= 3.1
+Requires:	ruby-chunky_png < 2
+Requires:	ruby-chunky_png >= 1.2
+Requires:	ruby-compass-core < 1.1
+Requires:	ruby-compass-core >= 1.0.1
+Requires:	ruby-compass-import-once < 1.1
+Requires:	ruby-compass-import-once >= 1.0.5
+Requires:	ruby-rb-fsevent >= 0.9.3
+Requires:	ruby-rb-inotify >= 0.9
+Requires:	ruby-sass < 3.5
+Requires:	ruby-sass >= 3.3.13
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -41,6 +47,9 @@ YUI, and others.
 %{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
 
 %build
+# write .gemspec
+%__gem_helper spec
+
 %if %{with tests}
 # Original test
 #find -type f -name *_test.rb | xargs testrb -Ilib:test
@@ -74,20 +83,18 @@ rm -rf .sass-cache
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_specdir},%{_bindir}}
 cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
 cp -a bin/* $RPM_BUILD_ROOT%{_bindir}
-
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc LICENSE.markdown
 %attr(755,root,root) %{_bindir}/compass
-%doc LICENSE.markdown README.markdown VERSION.yml
 %{ruby_vendorlibdir}/compass.rb
 %{ruby_vendorlibdir}/compass
-%{_examplesdir}/%{name}-%{version}
+%{ruby_specdir}/%{pkgname}-%{version}.gemspec
