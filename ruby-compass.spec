@@ -24,6 +24,7 @@ BuildRequires:	rubygem(minitest)
 BuildRequires:	rubygem(mocha)
 BuildRequires:	rubygem(sass)
 %endif
+Requires:	ruby-sass
 Requires:	rubygem(chunky_png)
 Requires:	rubygem(fssm) >= 0.2.7
 Requires:	rubygem(haml) >= 3.1
