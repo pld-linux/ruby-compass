@@ -6,7 +6,7 @@
 Summary:	A Sass-based CSS Meta-Framework
 Name:		ruby-%{pkgname}
 Version:	1.0.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gemcutter.org/downloads/compass-%{version}.gem
@@ -30,7 +30,6 @@ Requires:	ruby-compass-core < 1.1
 Requires:	ruby-compass-core >= 1.0.1
 Requires:	ruby-compass-import-once < 1.1
 Requires:	ruby-compass-import-once >= 1.0.5
-Requires:	ruby-rb-fsevent >= 0.9.3
 Requires:	ruby-rb-inotify >= 0.9
 Requires:	ruby-sass < 3.5
 Requires:	ruby-sass >= 3.3.13
@@ -49,6 +48,8 @@ YUI, and others.
 %build
 # write .gemspec
 %__gem_helper spec
+
+%{__sed} -i -e '/rb-fsevent/d' %{pkgname}-%{version}.gemspec
 
 %if %{with tests}
 # Original test
