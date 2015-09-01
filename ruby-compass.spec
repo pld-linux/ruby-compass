@@ -6,7 +6,7 @@
 Summary:	A Sass-based CSS Meta-Framework
 Name:		ruby-%{pkgname}
 Version:	1.0.1
-Release:	2
+Release:	3
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gemcutter.org/downloads/compass-%{version}.gem
